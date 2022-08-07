@@ -5,7 +5,7 @@ const { UserTable } = require("../UserTable");
 
 describe("UserTable", () => {
   it("renders table header", () => {
-    render(<UserTable users={[]} />);
+    render(<UserTable users={[]} columnHeaderOnClick={jest.fn()} />);
     expect(screen.getByRole("table")).toBeInTheDocument();
     expect(screen.getAllByRole("rowgroup")).toHaveLength(2);
     expect(
@@ -28,7 +28,7 @@ describe("UserTable", () => {
   it("renders users", () => {
     const { results } = dummyUsers;
     const users = results;
-    render(<UserTable users={users} />);
+    render(<UserTable users={users} columnHeaderOnClick={jest.fn()} />);
     expect(
       screen.getByRole("cell", { name: users[0].login.username })
     ).toBeInTheDocument();

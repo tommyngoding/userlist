@@ -9,17 +9,25 @@ import {
 } from "@mui/material";
 import moment from "moment/moment";
 
-export const UserTable = ({ users }) => {
+export const UserTable = ({ users, columnHeaderOnClick }) => {
   return (
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
             <TableCell>Username</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Gender</TableCell>
-            <TableCell>Registered Date</TableCell>
+            <TableCell onClick={() => columnHeaderOnClick("name")}>
+              Name
+            </TableCell>
+            <TableCell onClick={() => columnHeaderOnClick("email")}>
+              Email
+            </TableCell>
+            <TableCell onClick={() => columnHeaderOnClick("gender")}>
+              Gender
+            </TableCell>
+            <TableCell onClick={() => columnHeaderOnClick("registereddate")}>
+              Registered Date
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

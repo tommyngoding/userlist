@@ -12,6 +12,12 @@ function App() {
     keyword: "",
     gender: "",
   });
+  const [ascendingSort, setAscendingSort] = useState({
+    email: false,
+    name: false,
+    gender: false,
+    registereddate: false,
+  });
 
   const pageSize = 5;
   const results = 10;
@@ -33,12 +39,17 @@ function App() {
 
   const generateFilterStr = (currentFilter) => {
     let filterStr = "";
-    filterStr +=
-      currentFilter.gender.length > 0 ? `&gender=${currentFilter.gender}` : "";
-    filterStr +=
-      currentFilter.keyword.length > 0
-        ? `&keyword=${currentFilter.keyword}`
-        : "";
+    for (const key in currentFilter) {
+      if (currentFilter[key].length > 0) {
+        filterStr += `&${key}=${currentFilter[key]}`;
+      }
+    }
+    // filterStr +=
+    //   currentFilter.gender.length > 0 ? `&gender=${currentFilter.gender}` : "";
+    // filterStr +=
+    //   currentFilter.keyword.length > 0
+    //     ? `&keyword=${currentFilter.keyword}`
+    //     : "";
     return filterStr;
   };
 
@@ -64,10 +75,26 @@ function App() {
     fetchUsers(null, currentPage, pageSize, results);
   }, []);
 
+  const columnHeaderOnClick = (column) => {
+    fetchUsers(
+      {
+        sortBy: column,
+        sortOrder: ascendingSort[column] ? "descend" : "ascend",
+      },
+      1,
+      pageSize,
+      results
+    );
+    setAscendingSort({
+      ...ascendingSort,
+      [column]: !ascendingSort[column],
+    });
+  };
+
   return (
     <div className="App">
       <FilterForm filterOnChange={filterOnChange} />
-      <UserTable users={users} />
+      <UserTable users={users} columnHeaderOnClick={columnHeaderOnClick} />
       <Pagination
         pageSize={pageSize}
         results={results}

@@ -18,6 +18,22 @@ describe("App", () => {
     window.fetch.mockRestore();
   });
 
+  const clickExpectSortingResult = (column) => {
+    user.click(screen.getByRole("columnheader", { name: column }));
+    expect(window.fetch).toHaveBeenCalledTimes(2);
+    expect(window.fetch).toHaveBeenLastCalledWith(
+      `https://randomuser.me/api/?page=1&pageSize=5&results=10&sortBy=${column
+        .replace(/ /g, "")
+        .toLowerCase()}&sortOrder=ascend`
+    );
+    user.click(screen.getByRole("columnheader", { name: column }));
+    expect(window.fetch).toHaveBeenLastCalledWith(
+      `https://randomuser.me/api/?page=1&pageSize=5&results=10&sortBy=${column
+        .replace(/ /g, "")
+        .toLowerCase()}&sortOrder=descend`
+    );
+  };
+
   it("renders users", async () => {
     const { results } = dummyUsers;
     render(<App />);
@@ -123,7 +139,27 @@ describe("App", () => {
     user.click(screen.getByTestId("filter-keyword"));
     expect(window.fetch).toHaveBeenCalledTimes(4);
     expect(window.fetch).toHaveBeenLastCalledWith(
-      "https://randomuser.me/api/?page=1&pageSize=5&results=10&gender=male&keyword=jake"
+      "https://randomuser.me/api/?page=1&pageSize=5&results=10&keyword=jake&gender=male"
     );
+  });
+
+  it("calls api  when email column header is clicked", async () => {
+    render(<App />);
+    clickExpectSortingResult("Email");
+  });
+
+  it("calls api  when name column header is clicked", async () => {
+    render(<App />);
+    clickExpectSortingResult("Name");
+  });
+
+  it("calls api  when gender column header is clicked", async () => {
+    render(<App />);
+    clickExpectSortingResult("Gender");
+  });
+
+  it("calls api  when registered date column header is clicked", async () => {
+    render(<App />);
+    clickExpectSortingResult("Registered Date");
   });
 });

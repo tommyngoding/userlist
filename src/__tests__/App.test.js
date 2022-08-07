@@ -23,7 +23,7 @@ describe("App", () => {
     render(<App />);
     expect(window.fetch).toHaveBeenCalledTimes(1);
     expect(window.fetch).toHaveBeenCalledWith(
-      "https://randomuser.me/api/?page=1&pageSize=10&results=10"
+      "https://randomuser.me/api/?page=1&pageSize=5&results=10"
     );
     expect(
       await screen.findByRole("cell", {
@@ -37,7 +37,7 @@ describe("App", () => {
     user.selectOptions(screen.getByRole("combobox"), ["male"]);
     expect(window.fetch).toHaveBeenCalledTimes(2);
     expect(window.fetch).toHaveBeenLastCalledWith(
-      "https://randomuser.me/api/?page=1&pageSize=10&results=10&gender=male"
+      "https://randomuser.me/api/?page=1&pageSize=5&results=10&gender=male"
     );
   });
 
@@ -47,7 +47,7 @@ describe("App", () => {
     user.click(screen.getByTestId("filter-keyword"));
     expect(window.fetch).toHaveBeenCalledTimes(2);
     expect(window.fetch).toHaveBeenLastCalledWith(
-      "https://randomuser.me/api/?page=1&pageSize=10&results=10&keyword=susan"
+      "https://randomuser.me/api/?page=1&pageSize=5&results=10&keyword=susan"
     );
   });
 
@@ -58,7 +58,72 @@ describe("App", () => {
     user.click(screen.getByRole("button", { name: /reset filter/i }));
     expect(window.fetch).toHaveBeenCalledTimes(3);
     expect(window.fetch).toHaveBeenLastCalledWith(
-      "https://randomuser.me/api/?page=1&pageSize=10&results=10"
+      "https://randomuser.me/api/?page=1&pageSize=5&results=10"
+    );
+  });
+
+  it("calls api when page number is clicked", () => {
+    render(<App />);
+    user.click(screen.getByRole("button", { name: /2/i }));
+    expect(window.fetch).toHaveBeenCalledTimes(2);
+    expect(window.fetch).toHaveBeenLastCalledWith(
+      "https://randomuser.me/api/?page=2&pageSize=5&results=10"
+    );
+    user.click(screen.getByRole("button", { name: /2/i }));
+    expect(window.fetch).toHaveBeenCalledTimes(2);
+  });
+
+  it("calls api when previous or next button is clicked", () => {
+    render(<App />);
+    user.click(screen.getByTestId("next-btn"));
+    expect(window.fetch).toHaveBeenCalledTimes(2);
+    expect(window.fetch).toHaveBeenLastCalledWith(
+      "https://randomuser.me/api/?page=2&pageSize=5&results=10"
+    );
+    user.click(screen.getByTestId("next-btn"));
+    expect(window.fetch).toHaveBeenCalledTimes(2);
+    user.click(screen.getByTestId("prev-btn"));
+    expect(window.fetch).toHaveBeenCalledTimes(3);
+    expect(window.fetch).toHaveBeenLastCalledWith(
+      "https://randomuser.me/api/?page=1&pageSize=5&results=10"
+    );
+    user.click(screen.getByTestId("prev-btn"));
+    expect(window.fetch).toHaveBeenCalledTimes(3);
+  });
+
+  it("calls api again when filter gender on select and page number is clicked", async () => {
+    render(<App />);
+    user.selectOptions(screen.getByRole("combobox"), ["male"]);
+    expect(window.fetch).toHaveBeenCalledTimes(2);
+    expect(window.fetch).toHaveBeenLastCalledWith(
+      "https://randomuser.me/api/?page=1&pageSize=5&results=10&gender=male"
+    );
+    user.click(screen.getByRole("button", { name: /2/i }));
+    expect(window.fetch).toHaveBeenCalledTimes(3);
+    expect(window.fetch).toHaveBeenLastCalledWith(
+      "https://randomuser.me/api/?page=2&pageSize=5&results=10&gender=male"
+    );
+  });
+
+  it("calls api  when all filters onchange page number is clicked", async () => {
+    render(<App />);
+    user.selectOptions(screen.getByRole("combobox"), ["male"]);
+    expect(window.fetch).toHaveBeenCalledTimes(2);
+    expect(window.fetch).toHaveBeenLastCalledWith(
+      "https://randomuser.me/api/?page=1&pageSize=5&results=10&gender=male"
+    );
+
+    user.click(screen.getByRole("button", { name: /2/i }));
+    expect(window.fetch).toHaveBeenCalledTimes(3);
+    expect(window.fetch).toHaveBeenLastCalledWith(
+      "https://randomuser.me/api/?page=2&pageSize=5&results=10&gender=male"
+    );
+
+    user.type(screen.getByRole("textbox", { name: /search/i }), "jake");
+    user.click(screen.getByTestId("filter-keyword"));
+    expect(window.fetch).toHaveBeenCalledTimes(4);
+    expect(window.fetch).toHaveBeenLastCalledWith(
+      "https://randomuser.me/api/?page=1&pageSize=5&results=10&gender=male&keyword=jake"
     );
   });
 });

@@ -9,18 +9,18 @@ export const FilterForm = ({ filterOnChange }) => {
   };
 
   const searchBtnOnClick = () => {
-    filterOnChange(search, "keyword");
+    filterOnChange({ keyword: search });
   };
 
   const resetOnClick = () => {
     setSearch("");
     setGender("all");
-    filterOnChange("", "");
+    filterOnChange({ gender: "", keyword: "" });
   };
 
   const genderOnChange = (e) => {
     setGender(e.target.value);
-    filterOnChange(e.target.value, "gender");
+    filterOnChange({ gender: e.target.value });
   };
 
   return (

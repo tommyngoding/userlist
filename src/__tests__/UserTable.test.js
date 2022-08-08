@@ -11,9 +11,7 @@ describe("UserTable", () => {
     expect(
       screen.getByRole("columnheader", { name: /username/i })
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole("columnheader", { name: "Name" })
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("columnheader-name")).toBeInTheDocument();
     expect(
       screen.getByRole("columnheader", { name: /email/i })
     ).toBeInTheDocument();

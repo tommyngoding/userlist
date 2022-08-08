@@ -1,3 +1,6 @@
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { Button } from "@mui/material";
+
 export const Pagination = ({
   results,
   pageSize,
@@ -19,20 +22,33 @@ export const Pagination = ({
   };
 
   return (
-    <div>
-      <button data-testid="prev-btn" onClick={prevOnClick}>
-        {" "}
-        Prev{" "}
-      </button>
+    <>
+      <Button
+        size="small"
+        variant="outlined"
+        data-testid="prev-btn"
+        onClick={prevOnClick}
+      >
+        <LeftOutlined />
+      </Button>
       {[...Array(totalPage).keys()].map((page) => (
-        <button key={page} onClick={() => pageNumberOnClick(page + 1)}>
+        <Button
+          variant="outlined"
+          size="small"
+          key={page}
+          onClick={() => pageNumberOnClick(page + 1)}
+        >
           {page + 1}
-        </button>
+        </Button>
       ))}
-      <button data-testid="next-btn" onClick={nextOnClick}>
-        {" "}
-        Next{" "}
-      </button>
-    </div>
+      <Button
+        size="small"
+        variant="outlined"
+        data-testid="next-btn"
+        onClick={nextOnClick}
+      >
+        <RightOutlined />
+      </Button>
+    </>
   );
 };

@@ -13,10 +13,10 @@ function App() {
     gender: "",
   });
   const [ascendingSort, setAscendingSort] = useState({
-    email: false,
-    name: false,
-    gender: false,
-    registereddate: false,
+    email: null,
+    name: null,
+    gender: null,
+    registereddate: null,
   });
 
   const pageSize = 5;
@@ -93,14 +93,23 @@ function App() {
 
   return (
     <div className="App">
-      <FilterForm filterOnChange={filterOnChange} />
-      <UserTable users={users} columnHeaderOnClick={columnHeaderOnClick} />
-      <Pagination
-        pageSize={pageSize}
-        results={results}
-        pageNumberOnClick={pageNumberOnClick}
-        currentPage={currentPage}
+      <div className="filter-container">
+        <FilterForm filterOnChange={filterOnChange} />
+      </div>
+
+      <UserTable
+        users={users}
+        columnHeaderOnClick={columnHeaderOnClick}
+        ascendingSort={ascendingSort}
       />
+      <div className="pagination-container">
+        <Pagination
+          pageSize={pageSize}
+          results={results}
+          pageNumberOnClick={pageNumberOnClick}
+          currentPage={currentPage}
+        />
+      </div>
     </div>
   );
 }

@@ -96,15 +96,11 @@ describe("App", () => {
     expect(window.fetch).toHaveBeenLastCalledWith(
       "https://randomuser.me/api/?page=2&pageSize=5&results=10"
     );
-    user.click(screen.getByTestId("next-btn"));
-    expect(window.fetch).toHaveBeenCalledTimes(2);
     user.click(screen.getByTestId("prev-btn"));
     expect(window.fetch).toHaveBeenCalledTimes(3);
     expect(window.fetch).toHaveBeenLastCalledWith(
       "https://randomuser.me/api/?page=1&pageSize=5&results=10"
     );
-    user.click(screen.getByTestId("prev-btn"));
-    expect(window.fetch).toHaveBeenCalledTimes(3);
   });
 
   it("calls api again when filter gender on select and page number is clicked", async () => {

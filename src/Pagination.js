@@ -28,6 +28,7 @@ export const Pagination = ({
         variant="outlined"
         data-testid="prev-btn"
         onClick={prevOnClick}
+        disabled={currentPage === 1 ? true : false}
       >
         <LeftOutlined />
       </Button>
@@ -36,6 +37,12 @@ export const Pagination = ({
           variant="outlined"
           size="small"
           key={page}
+          style={{
+            border: `1px solid ${
+              currentPage === page + 1 ? "#47b8f5" : "#dbdbdb"
+            }`,
+            color: `${currentPage === page + 1 ? "#47b8f5" : "black"}`,
+          }}
           onClick={() => pageNumberOnClick(page + 1)}
         >
           {page + 1}
@@ -46,6 +53,7 @@ export const Pagination = ({
         variant="outlined"
         data-testid="next-btn"
         onClick={nextOnClick}
+        disabled={currentPage === totalPage ? true : false}
       >
         <RightOutlined />
       </Button>
